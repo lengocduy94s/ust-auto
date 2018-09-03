@@ -7,6 +7,7 @@ $(document).ready(function() {
       if($(this).hasClass("btn-primary")) {
         $("#bet-amount").val($("#betPrice").val());
         $("#beginBalance").val($("#balance-value").text());
+        startTool();
 
         $(this).removeClass("btn-primary");
         $(this).addClass("btn-danger");
@@ -14,7 +15,8 @@ $(document).ready(function() {
         $("#time-to-bet-number-1").on("DOMSubtreeModified", function(){
           if($(this).hasClass("green-timer")) {
             if($(this).text() == "22") {
-              getResult();
+              lastResult = getResult();
+              nextBet();
             } else if($(this).text() == "03") {
               chooseBaseOnWaterDropLHC();
             }
@@ -22,6 +24,7 @@ $(document).ready(function() {
 
         });
       } else {
+        stopTool();
         $(this).removeClass("btn-danger");
         $(this).addClass("btn-primary");
         $("#btnStart").text("Start");

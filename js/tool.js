@@ -1,7 +1,16 @@
 const RED = "red",
  GREEN = "green",
  GOLD = "gold",
- NONE = "null";
+ NONE = "null",
+ RESULT_WIN = "win",
+ RESULT_LOSE = "lose",
+ RESULT_DRAW = "draw",
+ CAPITAL_EQUAL_ORDER = "1",
+ CAPITAL_RAISE_WHEN_WIN = "2",
+ CAPITAL_RAISE_WHEN_LOSE = "3",
+ FOMULA_MARTINGLE = "1",
+ FOMULA_FIBONACCI = "2",
+ FOMULA_A136 = "3";
 
 const TIMER_INTERVAL = 1e3,
   BETTING_SECOND_START = 5,
@@ -42,10 +51,33 @@ var legendPieSize = 10;
 var beginBalance,
 lastBalance,
 lastResult,
-winChain,
-loseChain,
+winChain = 0,
+loseChain = 0,
+capitalManagement,
+fomula,
 nextBetPrice;
 
+function startTool() {
+  $("#method").text($("#selectType option:selected").text() + " - " + $("#selectMethod option:selected").text());
+  $("#capitalManagement").text($("#selectCapitalManagement option:selected").text() + ($("#selectCapitalManagement").val() == CAPITAL_EQUAL_ORDER ? "" : (" - " + $("#selectFomula option:selected").text())));
+  $("#betPrice").attr("disabled", "disabled");
+  $("#takeProfit").attr("disabled", "disabled");
+  $("#stopLoss").attr("disabled", "disabled");
+  $("#selectCapitalManagement").attr("disabled", "disabled");
+  $("#selectFomula").attr("disabled", "disabled");
+  $("#selectType").attr("disabled", "disabled");
+  $("#selectMethod").attr("disabled", "disabled");
+}
+
+function stopTool() {
+  $("#betPrice").removeAttr("disabled");
+  $("#takeProfit").removeAttr("disabled");
+  $("#stopLoss").removeAttr("disabled");
+  $("#selectCapitalManagement").removeAttr("disabled");
+  $("#selectFomula").removeAttr("disabled");
+  $("#selectType").removeAttr("disabled");
+  $("#selectMethod").removeAttr("disabled");
+}
 
 function getWaterDropChart() {
 	var chart = new Array(10);
@@ -97,6 +129,15 @@ function chooseBaseOnWaterDropLHC() {
 			choice = "NONE"
 			break;
 		} else if (lastColor == NONE) {
+      if(currentColumn > 0 && j == 0 && lastResult == RESULT_LOSE) {
+        if(chart[currentColumn-1][5] == RED) {
+          choice = "buy";
+        } else if(chart[currentColumn-1][5] == GREEN) {
+          choice = "sell";
+        } else {
+          choice = "NONE";
+        }
+      }
 			break;
 		}
 
@@ -105,16 +146,6 @@ function chooseBaseOnWaterDropLHC() {
 				choice = "sell"
 			} else if (lastColor == GREEN) {
 				choice = "buy"
-			}
-		} else if (j == 5) {
-			if(chart[currentColumn][4] == chart[currentColumn][5]) {
-				if(lastColor == RED) {
-					choice = "buy"
-				} else if (lastColor == GREEN) {
-					choice = "sell"
-				}
-			} else {
-				choice = "NONE"
 			}
 		} else {
 			if(lastColor == RED) {
@@ -167,10 +198,58 @@ function getResult() {
   var currentBalance = $("#balance-value").text();
   var winLoss = parseFloat(currentBalance) - parseFloat(lastBalance);
   if(winLoss > 0) {
-    alert("Win");
+    winChain++;
+    loseChain = 0;
+    return RESULT_WIN;
   } else if (winLoss < 0) {
-    alert("Lose")
+    loseChain++;
+    winChain = 0;
+    return RESULT_LOSE;
   } else {
-    alert("Refund");
+    return RESULT_DRAW;
   }
+}
+
+function nextBet() {
+  var currentChain = 0;
+  switch ($("#selectCapitalManagement").val()) {
+    case CAPITAL_EQUAL_ORDER:
+      currentChain = 0;
+      break;
+    case CAPITAL_RAISE_WHEN_WIN:
+      currentChain = winChain;
+      break;
+    case CAPITAL_RAISE_WHEN_LOSE:
+      currentChain = loseChain;
+      break;
+  }
+  var nextBet = getBetPriceByFomula(currentChain);
+  $("#bet-amount").val(nextBet);
+}
+
+function getBetPriceByFomula(currentChain) {
+  var nextBet = 0;
+  var betPrice = parseFloat($("#betPrice").val());
+  if(currentChain == 0) {
+    return betPrice;
+  }
+  switch ($("#selectFomula").val()) {
+    case FOMULA_MARTINGLE:
+      nextBet = getMartingleBet(betPrice, currentChain);
+      break;
+    case FOMULA_FIBONACCI:
+
+      break;
+    case FOMULA_A136:
+
+      break;
+  }
+  return nextBet;
+}
+
+function getMartingleBet(betPrice, currentChain) {
+  for(i = 0; i < currentChain; i++) {
+    betPrice*2;
+  }
+  return betPrice;
 }
