@@ -33,10 +33,19 @@ const TIMER_INTERVAL = 1e3,
   BUTTON_PLAY_SOUND = "is-play-sound",
   ENABLE_SOUND_KEY = "ENABLE_SOUND_KEY";
 
-	var siteUrl = 'https://order.ustrade.global';
-  var SIGNALR_HOST = 'https://order.ustrade.global/signalr';
-  var environment = 'w';
-  var legendPieSize = 10;
+var siteUrl = 'https://order.ustrade.global';
+var SIGNALR_HOST = 'https://order.ustrade.global/signalr';
+var environment = 'w';
+var legendPieSize = 10;
+
+//Loop value
+var beginBalance,
+lastBalance,
+lastResult,
+winChain,
+loseChain,
+nextBetPrice;
+
 
 function getWaterDropChart() {
 	var chart = new Array(10);
@@ -116,7 +125,7 @@ function chooseBaseOnWaterDropLHC() {
 		}
 	}
 	//alert($("#" + SELECT_BROKER_ID1).val() + " - " +  $("#" + SELECT_SYMBOL_ID1).val() + " - " + BALANCE_BUY_ID1 + " - " + BALANCE_SELL_ID1);
-
+  lastBalance = $("#balance-value").text();
 	if(choice == "buy") {
 		//$("#btn-buy1").click();
 		placeBet(1, $("#" + SELECT_BROKER_ID1).val(), $("#" + SELECT_SYMBOL_ID1).val(), BALANCE_BUY_ID1, BALANCE_SELL_ID1);
@@ -152,4 +161,16 @@ function showRunningBets(n) {
 		t.BrokerID == $("#" + SELECT_BROKER_ID1).val() && t.SymbolID == $("#" + SELECT_SYMBOL_ID1).val() && ($("#" + BALANCE_BUY_ID1).html(numeral(t.TotalBuy).format("0,0.00")), $("#" + BALANCE_SELL_ID1).html(numeral(t.TotalSell).format("0,0.00")));
 		t.BrokerID == $("#" + SELECT_BROKER_ID2).val() && t.SymbolID == $("#" + SELECT_SYMBOL_ID2).val() && ($("#" + BALANCE_BUY_ID2).html(numeral(t.TotalBuy).format("0,0.00")), $("#" + BALANCE_SELL_ID2).html(numeral(t.TotalSell).format("0,0.00")));
 	})
+}
+
+function getResult() {
+  var currentBalance = $("#balance-value").text();
+  var winLoss = parseFloat(currentBalance) - parseFloat(lastBalance);
+  if(winLoss > 0) {
+    alert("Win");
+  } else if (winLoss < 0) {
+    alert("Lose")
+  } else {
+    alert("Refund");
+  }
 }

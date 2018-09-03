@@ -6,15 +6,20 @@ $(document).ready(function() {
     $("#btnStart").on("click", function(event) {
       if($(this).hasClass("btn-primary")) {
         $("#bet-amount").val($("#betPrice").val());
-        $("#beginBalance").val("balance-value");
+        $("#beginBalance").val($("#balance-value").text());
 
         $(this).removeClass("btn-primary");
         $(this).addClass("btn-danger");
         $("#btnStart").text("Stop");
         $("#time-to-bet-number-1").on("DOMSubtreeModified", function(){
-          if($(this).text() == "20" && $(this).hasClass("green-timer")) {
-            chooseBaseOnWaterDropLHC();
+          if($(this).hasClass("green-timer")) {
+            if($(this).text() == "22") {
+              getResult();
+            } else if($(this).text() == "03") {
+              chooseBaseOnWaterDropLHC();
+            }
           }
+
         });
       } else {
         $(this).removeClass("btn-danger");
@@ -25,8 +30,8 @@ $(document).ready(function() {
 
 
     });
-  });
 
+  });
 });
 
 function setToolUiCss() {
