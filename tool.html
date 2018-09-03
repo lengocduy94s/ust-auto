@@ -1,0 +1,128 @@
+<!doctype html>
+<meta charset="UTF-8">
+<style>
+	#mt6 {
+		background-color: #f9f9f9;
+	}
+
+	h1,
+	div {
+		color: rgb(27, 2, 17);
+	}
+
+	h1 {
+		text-align: center;
+	}
+
+	.container {
+		width: auto;
+		padding-bottom: 20px;
+	}
+
+	#divSetting {
+		margin-top: 20px;
+	}
+
+	input,
+	select {
+		width: 100%;
+		height: 100%;
+		border: 2px solid rgb(8, 20, 43);
+	}
+
+	#btnStart {
+		display: block;
+		margin: 0 auto;
+		width: 30%;
+		text-align: center;
+		margin-top: 10px;
+	}
+</style>
+<html>
+
+<body>
+	<div id="mt6" style="background-color: #f9f9f9;">
+		<div class="container">
+			<h1>MT6 Solution</h1>
+			<!-- Info -->
+			<div class="row">
+				<div class="col-lg-4">
+					<span>Phương pháp đánh: </span>
+				</div>
+				<div class="col-lg-8">
+					<span id="method">Giọt nước - Liên hoàn cước</span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-4">
+					<span>Quản lý vốn: </span>
+				</div>
+				<div class="col-lg-8">
+					<span id="capitalManagement">Fibonacci (1-2-3-5-8-13-21-34...)</span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-4">
+					<span>Lệnh tiếp theo: </span>
+				</div>
+				<div class="col-lg-8">
+					<span id="nextBet">3$</span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-4">
+					<span>Lợi nhuận hiện tại: </span>
+				</div>
+				<div class="col-lg-8">
+					<span id="profit">7$</span>
+				</div>
+			</div>
+
+			<!-- Hidden Data -->
+			<input type="hidden" id="beginBalance" />
+			<input type="hidden" id="lastResult" />
+
+			<!-- Setting -->
+			<div class="row" id="divSetting">
+				<div class="col-lg-4">
+					<span>Lệnh cơ bản</span>
+					<input type="text" id="betPrice" />
+					<span>Chốt lãi</span>
+					<input type="text" id="takeProfit" />
+					<span>Dừng lỗ</span>
+					<input type="text" id="stopLoss" />
+				</div>
+				<div class="col-lg-4">
+					<span>Quản lý vốn</span>
+					<select id="selectCapitalManagement">
+						  <option value="1">Đều tay</option>
+						  <option value="2">Gấp khi thắng</option>
+						  <option value="3">Gấp khi thua</option>
+						</select>
+					<span>Công thức</span>
+					<select id="selectFomula">
+						  <option value="1">Martingle(1-2-4-8..)</option>
+						  <option value="2">Fibonacci(1-2-3-5..)</option>
+						  <option value="3">A136</option>
+						</select>
+				</div>
+				<div class="col-lg-4">
+					<span>Phương pháp đánh</span>
+					<select id="selectType">
+						  <option value="">Nến</option>
+						  <option value="">Giọt nước</option>
+					</select>
+					<span>Công thức</span>
+					<select id="selectMethod">
+						  <option value="">Liên Hoàn Cước</option>
+						  <option value="">Giấu trời qua biển</option>
+					</select>
+				</div>
+			</div>
+			<div class="row">
+				<button type="button" class="btn btn-primary btn-lg" id="btnStart">Start</button>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

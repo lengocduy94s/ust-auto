@@ -1,0 +1,38 @@
+{
+  // Required
+  "manifest_version": 2,
+  "name": "Ustrade Solution",
+  "version": "1.0",
+
+  // Recommended
+  "description": "Auto tool",
+  "icons": { "16": "icon.png",
+            "48": "icon.png",
+            "128": "icon.png"},
+
+  // // Pick one (or none)
+  "browser_action": {
+    "default_icon": {                    // optional
+      "16": "icon.png",           // optional
+      "24": "icon.png",           // optional
+      "32": "icon.png"            // optional
+    },
+    "default_title": "Ustrade Auto",      // optional; shown in tooltip
+    "default_popup": "popup.html"        // optional
+  },
+
+  "content_scripts": [
+     {
+       "matches": ["*://*.order.ustrade.global/"],
+       "css": ["css/bootstrap.css"],
+       "js": ["js/jquery.js", "js/bootstrap.js", "js/numeral.js", "js/content.js", "js/tool.js"]
+     }
+   ],
+
+  "web_accessible_resources": [
+    "tool.html"
+   ],
+  // Optional
+  "author": "Duy Le"
+
+}
