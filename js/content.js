@@ -6,6 +6,8 @@ $(document).ready(function() {
     $("#btnStart").on("click", function(event) {
       if($(this).hasClass("btn-primary")) {
         $("#bet-amount").val($("#betPrice").val());
+        //Vốn ban đầu
+        beginBalance = $("#balance-value").text();
         $("#beginBalance").val($("#balance-value").text());
         startTool();
 
