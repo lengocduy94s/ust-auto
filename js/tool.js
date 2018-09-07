@@ -67,6 +67,8 @@ function startTool() {
   $("#selectFomula").attr("disabled", "disabled");
   $("#selectType").attr("disabled", "disabled");
   $("#selectMethod").attr("disabled", "disabled");
+
+  capitalManagement = $("#selectCapitalManagement").val();
 }
 
 function stopTool() {
@@ -155,7 +157,6 @@ function chooseBaseOnWaterDropLHC() {
 			}
 		}
 	}
-	//alert($("#" + SELECT_BROKER_ID1).val() + " - " +  $("#" + SELECT_SYMBOL_ID1).val() + " - " + BALANCE_BUY_ID1 + " - " + BALANCE_SELL_ID1);
   lastBalance = $("#balance-value").text();
 	if(choice == "buy") {
 		//$("#btn-buy1").click();
@@ -195,14 +196,20 @@ function showRunningBets(n) {
 }
 
 function getResult() {
+  //Get profit
   var currentBalance = $("#balance-value").text();
+  var profit = parseFloat(currentBalance) - parseFloat(beginBalance);
+  $("#profit").text(numeral(profit).format("0,0.00") + "$");
+
   var winLoss = parseFloat(currentBalance) - parseFloat(lastBalance);
   if(winLoss > 0) {
     winChain++;
     loseChain = 0;
+    $("#currentChain").text("Win - " + winChain);
     return RESULT_WIN;
   } else if (winLoss < 0) {
     loseChain++;
+    $("#currentChain").text("Lose - " + loseChain);
     winChain = 0;
     return RESULT_LOSE;
   } else {
@@ -211,8 +218,9 @@ function getResult() {
 }
 
 function nextBet() {
+  //Get currentChain
   var currentChain = 0;
-  switch ($("#selectCapitalManagement").val()) {
+  switch (capitalManagement) {
     case CAPITAL_EQUAL_ORDER:
       currentChain = 0;
       break;
@@ -223,7 +231,10 @@ function nextBet() {
       currentChain = loseChain;
       break;
   }
+
+  //Set next bet
   var nextBet = getBetPriceByFomula(currentChain);
+  $("#nextBet").text(nextBet + "$");
   $("#bet-amount").val(nextBet);
 }
 
@@ -248,8 +259,5 @@ function getBetPriceByFomula(currentChain) {
 }
 
 function getMartingleBet(betPrice, currentChain) {
-  for(i = 0; i < currentChain; i++) {
-    betPrice*2;
-  }
-  return betPrice;
+  return betPrice * Math.pow(2, currentChain);
 }
