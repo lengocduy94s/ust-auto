@@ -53,6 +53,7 @@ lastBalance,
 lastResult,
 winChain = 0,
 loseChain = 0,
+limitChain = 100;
 capitalManagement,
 fomula,
 nextBetPrice;
@@ -69,6 +70,9 @@ function startTool() {
   $("#selectMethod").attr("disabled", "disabled");
 
   capitalManagement = $("#selectCapitalManagement").val();
+  beginBalance = $("#balance-value").text();
+  limitChain = $("#limitChain").val();
+
 }
 
 function stopTool() {
@@ -230,6 +234,10 @@ function nextBet() {
     case CAPITAL_RAISE_WHEN_LOSE:
       currentChain = loseChain;
       break;
+  }
+
+  while(currentChain >= limitChain) {
+    currentChain = currentChain - limitChain;
   }
 
   //Set next bet

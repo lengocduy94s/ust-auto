@@ -6,14 +6,13 @@ $(document).ready(function() {
     $("#btnStart").on("click", function(event) {
       if($(this).hasClass("btn-primary")) {
         $("#bet-amount").val($("#betPrice").val());
-        //Vốn ban đầu
-        beginBalance = $("#balance-value").text();
-        $("#beginBalance").val($("#balance-value").text());
         startTool();
-
+        
+        //Change buttonType
         $(this).removeClass("btn-primary");
         $(this).addClass("btn-danger");
         $("#btnStart").text("Stop");
+
         $("#time-to-bet-number-1").on("DOMSubtreeModified", function(){
           if($(this).hasClass("green-timer")) {
             if($(this).text() == "22") {
